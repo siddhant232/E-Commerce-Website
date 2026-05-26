@@ -5,6 +5,8 @@ import Products from '../pages/Products';
 
 const initialState = {
     Products : [],
+    Loading : false,
+    Error : null,
 }
 
 const productslice = createSlice({
@@ -13,9 +15,15 @@ const productslice = createSlice({
     reducers : {
         loadproduct : (state,action)=>{
             state.Products = action.payload;
+        },
+        setLoading : (state,action)=>{
+            state.Loading = action.payload;
+        },
+        setError : (state,action)=>{
+            state.Error = action.payload;
         }
     }
 });
 
-export const {loadproduct} = productslice.actions;
+export const {loadproduct,setLoading,setError} = productslice.actions;
 export default productslice.reducer;
