@@ -3,7 +3,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
-import { asyncsetuser } from '../store/UserAction';
+import { asyncsetuser } from '../store/user/UserAction';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -12,15 +12,21 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-    const submithandler = (data)=>{
+    const submithandler = async (data)=>{
       data.id = nanoid();
       data.isAdmin = false;
-      dispatch(asyncsetuser(data));
-      toast.success("Registration Success");
-      navigate('/login');
-      reset();
-    }
-  
+
+      try {
+         const res = await dispatch(asyncsetuser(data));
+         toast.success(res.message);
+         navigate('/');
+         reset();
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+     
+  }
+
     return (
       <div className="min-h-full flex items-center justify-center p-4 bg-gradient-to-br from-indigo-50 to-purple-50">
         <div className="w-full max-w-md bg-white/80 backdrop-blur-lg rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-10 transform transition-all duration-500 hover:shadow-[0_8px_40px_rgb(0,0,0,0.12)]">

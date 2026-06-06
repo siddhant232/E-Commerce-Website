@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import { asyncsetproduct } from '../../store/ProductAction';
+import { asyncsetproduct } from '../../store/product/ProductAction';
 
 const CreateProduct = () => {
 

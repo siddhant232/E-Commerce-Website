@@ -4,7 +4,8 @@ import React from 'react'
 import {useForm} from 'react-hook-form'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { asyncloginuser } from '../store/UserAction';
+import { asyncloginuser } from '../store/user/UserAction';
+import { toast } from 'react-toastify';
 
 const Login = () => {
 
@@ -12,13 +13,12 @@ const Login = () => {
   const navigate = useNavigate();
 
   const submithandler = async(data)=>{
-    const result = await asyncloginuser(data);
-    if(result.success){
-      alert(result.message);
+    try {
+      const result = await asyncloginuser(data);
+      toast.success(result.message);
       navigate("/");
-    }
-    else{
-      alert(result.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
     reset();
   }

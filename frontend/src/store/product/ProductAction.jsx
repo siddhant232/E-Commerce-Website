@@ -1,4 +1,4 @@
-import axios from "../api/AxiosConfig"
+import axios from "../../api/AxiosConfig"
 import { loadproduct, setLoading, setError } from "./ProductSlice";
 
 export const asyncsetproduct = (product) => async(dispatch,getstate)=> {

@@ -3,7 +3,7 @@ import axios from './api/AxiosConfig';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import Mainroutes from './routes/Mainroutes';
 import Nav from './components/Nav';
-import { asynclaodproduct } from './store/ProductAction';
+import { asynclaodproduct } from './store/product/ProductAction';
 import { store } from './store/Store';
 
 function App() {
