@@ -1,7 +1,6 @@
 
 import React from 'react'
 import { useForm } from 'react-hook-form';
-import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router-dom';
 import { asyncsetuser } from '../store/user/UserAction';
 import { useDispatch } from 'react-redux';
@@ -13,8 +12,6 @@ const Register = () => {
   const dispatch = useDispatch();
 
     const submithandler = async (data)=>{
-      data.id = nanoid();
-      data.isAdmin = false;
 
       try {
          const res = await dispatch(asyncsetuser(data));
@@ -40,15 +37,31 @@ const Register = () => {
   
           <form onSubmit={handleSubmit(submithandler)} className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
-              <label className="text-sm font-bold text-gray-700 ml-1" htmlFor="username">Username</label>
+              <label className="text-sm font-bold text-gray-700 ml-1" htmlFor="name">Full Name</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <input 
+                  id="name"
+                  type="text" 
+                  placeholder="Enter your full name"
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300 font-medium"
+                  {...register("name")}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-bold text-gray-700 ml-1" htmlFor="username">Email</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
                 </div>
                 <input 
                   id="username"
                   type="text" 
-                  placeholder="Choose a username"
+                  placeholder="Enter your email"
                   className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300 font-medium"
                   {...register("username")}
                 />

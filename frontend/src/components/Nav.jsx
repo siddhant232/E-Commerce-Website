@@ -4,11 +4,26 @@ import { NavLink } from 'react-router-dom';
 import Home from '../pages/Home';
 import Products from '../pages/Products';
 import Login from '../pages/Login';
+import ProfileDropdown from './ProfileDropdown';
 
 const Nav = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const dropdownRef = React.useRef(null);
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-lg border-b border-gray-200/80 shadow-sm transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0 flex items-center">
             <span className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 tracking-tight cursor-default">
@@ -30,6 +45,13 @@ const Nav = () => {
               Sign In
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
             </NavLink>
+
+            <div className="relative" ref={dropdownRef}>
+              <div onClick={() => setIsOpen(!isOpen)} className={`h-11 w-11 rounded-full overflow-hidden cursor-pointer transition-all duration-200 ${isOpen ? 'ring-2 ring-indigo-500 ring-offset-2' : 'ring-2 ring-gray-200 hover:ring-indigo-300'}`}>
+                <img src="https://images.unsplash.com/photo-1633333712269-f939248d1a96?q=80&w=387&auto=format&fit=crop" className="h-full w-full object-cover" alt="Profile" />
+              </div>
+              {isOpen && <ProfileDropdown onClose={() => setIsOpen(false)} />}
+            </div>
           </div>
         </div>
       </div>

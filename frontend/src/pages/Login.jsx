@@ -1,5 +1,4 @@
 
-import { nanoid } from 'nanoid';
 import React from 'react'
 import {useForm} from 'react-hook-form'
 import { useDispatch } from 'react-redux';
@@ -11,10 +10,11 @@ const Login = () => {
 
   const { register, handleSubmit, reset} = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const submithandler = async(data)=>{
     try {
-      const result = await asyncloginuser(data);
+      const result = await dispatch(asyncloginuser(data));
       toast.success(result.message);
       navigate("/");
     } catch (error) {

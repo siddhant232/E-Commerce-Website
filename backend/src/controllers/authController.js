@@ -6,7 +6,7 @@ const generateToken = require("../utils/generateToken");
 const register = async (req,res)=>{
 
     try {
-        const {username,password} = req.body;
+        const {name,username,password} = req.body;
         const saltrounds = 10;
         
         const isUserExist = await pool.query("SELECT * FROM users WHERE username = $1",[username]);
@@ -19,10 +19,9 @@ const register = async (req,res)=>{
         const hashpassword = await bcrypt.hash(password,saltrounds);
         
 
-        const user = await pool.query("INSERT INTO users(username,password) VALUES ($1,$2) RETURNING id", [username,hashpassword]);
+        const user = await pool.query("INSERT INTO users(name,username,password) VALUES ($1,$2,$3) RETURNING id, name, username", [name,username,hashpassword]);
 
         const token = generateToken(user.rows[0]);
-        console.log("token",token);
         
         
         res.cookie('Token',token,{
@@ -34,7 +33,8 @@ const register = async (req,res)=>{
 
         
         res.status(201).json({
-            message : "Registration successfull"
+            message : "Registration successfull",
+            user: user.rows[0]
         })
 
     } catch (error) {
@@ -69,7 +69,7 @@ const login =  async (req,res) => {
             });
         }
 
-       const token = generateToken(isuservalid);
+       const token = generateToken(isuservalid.rows[0]);
         
         res.cookie('Token',token,{
             httpOnly: true,
@@ -78,8 +78,11 @@ const login =  async (req,res) => {
             maxAge: 24 * 60 * 60 * 1000
         });
 
+        const { password: _, ...userData } = isuservalid.rows[0];
+
         return res.status(200).json({
-            message: "Login successfull"
+            message: "Login successfull",
+            user: userData
         })
         
     } catch (error) {
@@ -91,5 +94,21 @@ const login =  async (req,res) => {
     }
 }
 
+const logout = async (req, res) => {
+    try {
+        
+        res.clearCookie("Token");
+        return res.status(200).json({
+            message: "Logout successfull"
+        });
 
-module.exports = {register,login};
+    } catch (error) {
+        console.log(error);
+        
+        return res.status(500).json({
+            message: "Logout failed"
+        });
+    }
+}
+
+module.exports = {register,login,logout};
